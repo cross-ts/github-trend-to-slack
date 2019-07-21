@@ -1,6 +1,9 @@
 package main
 
+import "fmt"
+
 func main() {
-	Scrape()
+	trends := Scrape()
+	fmt.Println(trends)
 	Send()
 }

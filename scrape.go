@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
 )
@@ -20,7 +19,7 @@ func httpRequest() *http.Response {
 	return res
 }
 
-func pickTrendsFrom(response *http.Response) *goquery.Selection {
+func makeTrendsSelectionFrom(response *http.Response) *goquery.Selection {
 	doc, err := goquery.NewDocumentFromReader(response.Body)
 	if err != nil {
 		panic(err)
@@ -29,17 +28,28 @@ func pickTrendsFrom(response *http.Response) *goquery.Selection {
 	return trendSelections
 }
 
-func hoge(i int, s *goquery.Selection) {
-	repo, _ := s.Find("h1 > a").Attr("href")
+func makeGithubTrendFrom(s *goquery.Selection) (trend GithubTrend) {
+	repo, exists := s.Find("h1 > a").Attr("href")
+	if !exists {
+		panic("Not found!")
+	}
 	desc := s.Find("p").Text()
-	fmt.Println(repo)
-	fmt.Println(desc)
+	trend = GithubTrend{repo: repo, desc: desc}
+	return
 }
 
-func Scrape() {
+func makeGithubTrendsFrom(s *goquery.Selection) (result []GithubTrend) {
+	s.Each(func(i int, s *goquery.Selection) {
+		trend := makeGithubTrendFrom(s)
+		result = append(result, trend)
+	})
+	return
+}
+
+func Scrape() (trends []GithubTrend) {
 	res := httpRequest()
 	defer res.Body.Close()
-
-	trends := pickTrendsFrom(res)
-	trends.Each(hoge)
+	selections := makeTrendsSelectionFrom(res)
+	trends = makeGithubTrendsFrom(selections)
+	return
 }

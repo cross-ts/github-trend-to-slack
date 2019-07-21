@@ -5,7 +5,7 @@ ENV CGO_ENABLED=0 \
 WORKDIR /go/src/build
 RUN apk add git && \
     go get -u github.com/golang/dep/cmd/dep
-COPY Gopkg.* ./
+COPY Gopkg.lock Gopkg.toml ./
 RUN dep ensure --vendor-only
 COPY *.go ./
 RUN go build -a --installsuffix cgo -ldflags="-s -w" -o github-trend-to-slack *.go

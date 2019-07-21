@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/nlopes/slack"
 	"os"
+	"time"
 )
 
 func newSlackClient() *slack.Client {
@@ -35,10 +36,17 @@ func createMessagesFrom(trends []GithubTrend) (messages []slack.MsgOption) {
 	return
 }
 
+func threadText() string {
+	now := time.Now().Format("2006/01/02 15:04:05")
+	return "*【Github Trending】* at *" + now + "*"
+}
+
 func Send(trends []GithubTrend) {
 	client := newSlackClient()
 	channel := postChannel()
-	for _, message := range createMessagesFrom(trends) {
-		client.PostMessage(channel, message)
+	message := slack.MsgOptionText(threadText(), true)
+	_, thread, _ := client.PostMessage(channel, message)
+	for _, message = range createMessagesFrom(trends) {
+		client.PostMessage(channel, message, slack.MsgOptionTS(thread))
 	}
 }

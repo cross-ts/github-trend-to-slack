@@ -1,6 +1,7 @@
 package main
 
 type GithubTrend struct {
+	rank int
 	repo string
 	desc string
 }

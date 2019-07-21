@@ -41,6 +41,7 @@ func makeGithubTrendFrom(s *goquery.Selection) (trend GithubTrend) {
 func makeGithubTrendsFrom(s *goquery.Selection) (result []GithubTrend) {
 	s.Each(func(i int, s *goquery.Selection) {
 		trend := makeGithubTrendFrom(s)
+		trend.rank = i
 		result = append(result, trend)
 	})
 	return

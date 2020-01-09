@@ -3,7 +3,7 @@ name: Notify to Slack
 on:
   schedule:
     # At 21:00 (UTC) -> 06:00 (JST)
-    - cron: '00 00 21 * *'
+    - cron: '00 21 * * *'
 
 jobs:
   exec:

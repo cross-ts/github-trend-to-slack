@@ -1,9 +1,6 @@
 name: Notify to Slack
 
 on:
-  push:
-    branches:
-      - master
   schedule:
     # At 21:00 (UTC) -> 06:00 (JST)
     - cron: '00 00 21 * *'

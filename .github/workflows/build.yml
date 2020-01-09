@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - master
-  # paths:
-  #   - '!.github/**'
-  #   - '!.env.exsample'
-  #   - '!.gitignore'
-  #   - '!README.md'
+  paths:
+    - '!.github/**'
+    - '!.env.exsample'
+    - '!.gitignore'
+    - '!README.md'
 
 jobs:
   build:

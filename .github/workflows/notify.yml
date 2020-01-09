@@ -1,4 +1,4 @@
-name: Exec
+name: Notify to Slack
 
 on:
   push:
